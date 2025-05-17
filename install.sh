@@ -234,7 +234,7 @@ sleep 10
 
 # Aplicar política ACL
 log "Aplicando política de ACL..."
-docker exec -it headscale headscale apply-policies --file /etc/headscale/acl.json
+docker exec -it headscale headscale acl update /etc/headscale/acl.json
 
 # Criar namespace sysprime
 log "Criando namespace sysprime..."
