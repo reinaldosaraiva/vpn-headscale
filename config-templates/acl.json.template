@@ -1,0 +1,26 @@
+{
+  // ACL policy for Headscale - Sysprime Network Access
+  // This defines which nodes can communicate with the Sysprime internal network
+  "acls": [
+    // Allow all users in the sysprime namespace to access internal network
+    {
+      "action": "accept",
+      "src": ["sysprime:*"],
+      "dst": ["sysprime:*:*"]
+    },
+    // Allow access to Sysprime internal resources
+    {
+      "action": "accept",
+      "src": ["sysprime:*"],
+      "dst": ["10.0.0.0/24:*"]
+    }
+  ],
+  
+  // Auto-approvers for the gateway route
+  "autoApprovers": {
+    // Automatically approve the 10.0.0.0/24 route from the gateway
+    "routes": {
+      "sysprime:gateway-sysprime": ["10.0.0.0/24"]
+    }
+  }
+}

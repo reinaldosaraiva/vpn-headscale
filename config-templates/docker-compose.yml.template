@@ -1,0 +1,36 @@
+services:
+  headscale:
+    container_name: headscale
+    image: headscale/headscale:latest-debug
+    volumes:
+      - ./config:/etc/headscale/
+      - ./data:/var/lib/headscale
+    ports:
+      - "27896:8080"
+    command: "serve"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Sao_Paulo
+
+  headplane:
+    container_name: headplane
+    image: ghcr.io/tale/headplane:latest
+    restart: unless-stopped
+    volumes:
+      - ./config:/etc/headscale
+      - ./data:/var/lib/headscale
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/headplane-config.yaml:/etc/headplane/config.yaml
+    ports:
+      - "3000:3000"
+    environment:
+      COOKIE_SECRET: "COOKIE_SECRET"
+      HEADSCALE_URL: "http://IP_DO_SERVIDOR:27896"
+      CONFIG_FILE: "/etc/headscale/config.yaml"
+      HEADSCALE_INTEGRATION: "docker"
+      HEADSCALE_CONTAINER: "headscale"
+      DISABLE_API_KEY_LOGIN: "true"
+      HOST: "0.0.0.0"
+      PORT: "3000"
+      TZ: "America/Sao_Paulo"
+      ROOT_API_KEY: "API_KEY"
